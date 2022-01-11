@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useContext, useLayoutEffect } from "react";
+import { useCallback, useContext, useLayoutEffect } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useRef } from "react";
@@ -70,26 +70,41 @@ const CutomTabs = () => {
   //       //   tabsRef.current.scrollLeft += posRef.current;
   //     }
   //   }, [isRTL]);
-  const onTabsScroll = (e) => {
-    // console.log(posRef.current, "refPos");
-    // console.log(getScrollPosition(e.target), "tabPos");
-    // console.log(getScrollPosition(e.target).x, "calc");
-    const parentPos = tabsRef.current.getBoundingClientRect();
-    const childPos = tabRef.current[isActive].getBoundingClientRect();
-    // console.log(parentPos.x - childPos.x);
-    // console.log(getScrollPosition(e.target));
-    console.log(
-      getScrollPosition(e.target).x - (parentPos.x - childPos.x),
-      "act"
-    );
-    // console.log(posRef.current, "ref");
+  const onTabsScroll = useCallback(
+    (e) => {
+      // console.log(posRef.current, "refPos");
+      // console.log(getScrollPosition(e.target), "tabPos");
+      // console.log(getScrollPosition(e.target).x, "calc");
+      const parentPos = tabsRef.current.getBoundingClientRect();
+      const childPos = tabRef.current[isActive].getBoundingClientRect();
+      // console.log(parentPos.x);
+      // console.log(getScrollPosition(e.target));
+      // console.log(childPos.left , "child");
+      // // console.log(posRef.current, "ref");
+      // console.log(
+      //   Math.abs(getScrollPosition(e.target).x) -
+      //     Math.abs(childPos.x - tabsRef.current.offsetWidth),
+      //   "new"
+      // );
+      // console.log(childPos.x - tabsRef.current.offsetWidth, "sss");
+      // console.log(childPos.x);
+      console.log(
+        // Math.abs(getScrollPosition(e.target).x) -
+        Math.abs(tabsRef.current.offsetWidth),
+        "new"
+      );
+      posRef.current = isRTL
+        ? Math.abs(getScrollPosition(e.target).x) -
+          Math.abs(childPos.x - tabsRef.current.offsetWidth)
+        : getScrollPosition(e.target).x - (parentPos.x - childPos.x);
+      // console.log(parentPos.x - childPos.x, "p - c");
 
-    posRef.current = getScrollPosition(e.target).x - (parentPos.x - childPos.x);
+      // setPos(getScrollPosition(e.target).x - (parentPos.x - childPos.x));
 
-    // setPos(getScrollPosition(e.target).x - (parentPos.x - childPos.x));
-
-    // pos = getScrollPosition(e.target).x - (parentPos.x - childPos.x);
-  };
+      // pos = getScrollPosition(e.target).x - (parentPos.x - childPos.x);
+    },
+    [posRef.current]
+  );
 
   return (
     <StyledTabsContainer>
