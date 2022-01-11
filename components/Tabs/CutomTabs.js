@@ -87,15 +87,24 @@ const CutomTabs = () => {
       //   "new"
       // );
       // console.log(childPos.x - tabsRef.current.offsetWidth, "sss");
-      // console.log(childPos.x);
+      // console.log(
+      //   Math.abs(tabsRef.current.getBoundingClientRect().left - childPos.x),
+      //   "sss"
+      // );
+      const CP =
+        Math.abs(tabsRef.current.offsetWidth) -
+        Math.abs(tabsRef.current.getBoundingClientRect().left - childPos.x) -
+        tabRef.current[isActive].offsetWidth;
+      // console.log();
       console.log(
-        // Math.abs(getScrollPosition(e.target).x) -
-        Math.abs(tabsRef.current.offsetWidth),
+        Math.abs(getScrollPosition(e.target).x) - Math.abs(CP),
         "new"
       );
+      const { x, width, left, right } =
+        tabRef.current[isActive].getBoundingClientRect();
+      // console.log({ x, width, left, right });
       posRef.current = isRTL
-        ? Math.abs(getScrollPosition(e.target).x) -
-          Math.abs(childPos.x - tabsRef.current.offsetWidth)
+        ? Math.abs(getScrollPosition(e.target).x) - Math.abs(CP)
         : getScrollPosition(e.target).x - (parentPos.x - childPos.x);
       // console.log(parentPos.x - childPos.x, "p - c");
 
@@ -103,7 +112,7 @@ const CutomTabs = () => {
 
       // pos = getScrollPosition(e.target).x - (parentPos.x - childPos.x);
     },
-    [posRef.current]
+    [<posRef className="current"></posRef>]
   );
 
   return (
