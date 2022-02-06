@@ -17,12 +17,7 @@ export default function Home() {
       voluptate dolor sit voluptatem optio repellendus, quos reprehenderit
       aliquid molestias saepe officia aspernatur adipisci? Fuga cumque esse
       deleniti nemo molestias.
-      {/* <ThemeProvider theme={theme}>
-        <div dir="rtl">
-          <MatTabs />
-        </div>
-      </ThemeProvider> */}
-      <CustomTabs />
+      <MatTabs />
     </div>
   );
 }

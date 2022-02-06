@@ -35,11 +35,10 @@ const CutomTabs = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      tabsRef.current.scrollLeft +=
-        Math.abs(tabRef.current[isActive].getBoundingClientRect().x) -
-        tabRef.current[0].offsetWidth;
-    }, 200);
+    console.log(abRef.current[isActive].getBoundingClientRect().x);
+    tabsRef.current.scrollLeft +=
+      Math.abs(tabRef.current[isActive].getBoundingClientRect().x) -
+      tabRef.current[0].offsetWidth;
   }, [isActive]);
   useEffect(() => {
     // tabsRef.current.scrollLeft = 1;
@@ -70,64 +69,50 @@ const CutomTabs = () => {
   //       //   tabsRef.current.scrollLeft += posRef.current;
   //     }
   //   }, [isRTL]);
-  const onTabsScroll = useCallback((e) => {
-    // console.log(posRef.current, "refPos");
-    // console.log(getScrollPosition(e.target), "tabPos");
-    // console.log(getScrollPosition(e.target).x, "calc");
-    const parentPos = tabsRef.current.getBoundingClientRect();
-    const childPos = tabRef.current[isActive].getBoundingClientRect();
-    // console.log(parentPos.x);
-    // console.log(getScrollPosition(e.target));
-    // console.log(childPos.left , "child");
-    // // console.log(posRef.current, "ref");
-    // console.log(
-    //   Math.abs(getScrollPosition(e.target).x) -
-    //     Math.abs(childPos.x - tabsRef.current.offsetWidth),
-    //   "new"
-    // );
-    // console.log(childPos.x - tabsRef.current.offsetWidth, "sss");
-    // console.log(
-    //   Math.abs(tabsRef.current.getBoundingClientRect().left - childPos.x),
-    //   "sss"
-    // );
-    const CP =
-      Math.abs(tabsRef.current.getBoundingClientRect().left - childPos.x) -
-      tabRef.current[isActive].offsetWidth;
-    // console.log(tabRef.current[isActive].getBoundingClientRect().width);
-    // console.log(
-    //   tabsRef.current.offsetWidth +
-    //     tabRef.current[isActive].getBoundingClientRect().width * 2,
-    //   "new"
-    // );
-    console.log(getScrollPosition(e.target).x, "scroll pos");
-    console.log(parentPos.x - childPos.x, "acgtive");
-    console.log(
-      Math.abs(getScrollPosition(e.target).x) -
-        parentPos.x -
-        childPos.x +
-        tabsRef.current.offsetWidth
-    );
-    console.log();
-    // console.log(getScrollPosition(e.target).x);
-    // console.log(
-    //   tabsRef.current.offsetWidth -
-    //     tabRef.current[isActive].getBoundingClientRect().width * 2
-    // );
-    const { x, width, left, right } =
-      tabRef.current[isActive].getBoundingClientRect();
-    // console.log({ x, width, left, right });
-    posRef.current = isRTL
-      ? Math.abs(getScrollPosition(e.target).x) -
-        parentPos.x -
-        childPos.x +
-        tabsRef.current.offsetWidth
-      : getScrollPosition(e.target).x - (parentPos.x - childPos.x);
-    // console.log(parentPos.x - childPos.x, "p - c");
+  const onTabsScroll = useCallback(
+    (e) => {
+      // console.log(posRef.current, "refPos");
+      // console.log(getScrollPosition(e.target), "tabPos");
+      // console.log(getScrollPosition(e.target).x, "calc");
+      const parentPos = tabsRef.current.getBoundingClientRect();
+      const childPos = tabRef.current[isActive].getBoundingClientRect();
+      // console.log(parentPos.x);
+      // console.log(getScrollPosition(e.target));
+      // console.log(childPos.left , "child");
+      // // console.log(posRef.current, "ref");
+      // console.log(
+      //   Math.abs(getScrollPosition(e.target).x) -
+      //     Math.abs(childPos.x - tabsRef.current.offsetWidth),
+      //   "new"
+      // );
+      // console.log(childPos.x - tabsRef.current.offsetWidth, "sss");
+      // console.log(
+      //   Math.abs(tabsRef.current.getBoundingClientRect().left - childPos.x),
+      //   "sss"
+      // );
+      const CP =
+        Math.abs(tabsRef.current.offsetWidth) -
+        Math.abs(tabsRef.current.getBoundingClientRect().left - childPos.x) -
+        tabRef.current[isActive].offsetWidth;
+      // console.log();
+      // console.log(
+      //   Math.abs(getScrollPosition(e.target).x) - Math.abs(CP),
+      //   "new"
+      // );
+      const { x, width, left, right } =
+        tabRef.current[isActive].getBoundingClientRect();
+      // console.log({ x, width, left, right });
+      posRef.current = isRTL
+        ? Math.abs(getScrollPosition(e.target).x) - Math.abs(CP)
+        : getScrollPosition(e.target).x - (parentPos.x - childPos.x);
+      // console.log(parentPos.x - childPos.x, "p - c");
 
-    // setPos(getScrollPosition(e.target).x - (parentPos.x - childPos.x));
+      // setPos(getScrollPosition(e.target).x - (parentPos.x - childPos.x));
 
-    // pos = getScrollPosition(e.target).x - (parentPos.x - childPos.x);
-  });
+      // pos = getScrollPosition(e.target).x - (parentPos.x - childPos.x);
+    },
+    [<posRef className="current"></posRef>]
+  );
 
   return (
     <StyledTabsContainer>

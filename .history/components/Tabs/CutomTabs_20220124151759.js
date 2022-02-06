@@ -14,7 +14,8 @@ const CutomTabs = () => {
   const tabsRef = useRef();
   const tabRef = useRef([]);
   const [isActive, setIsActive] = useState(4);
-  const [pos, setPos] = useState(0);
+
+  const RTLPosRef = useRef(0);
   const posRef = useRef(0);
   const onRightBtnClick = () => {
     if (tabsRef.current.clientWidth < tabsRef.current.scrollWidth) {
@@ -51,9 +52,8 @@ const CutomTabs = () => {
     } else {
       console.log(Math.abs(posRef.current), "ltr");
 
-      setTimeout(() => {
-        tabsRef.current.scrollLeft += Math.abs(posRef.current);
-      }, 100);
+      setTimeout(() => (tabsRef.current.scrollLeft += posRef.current), 150);
+
       //   tabsRef.current.scrollLeft += posRef.current;
       //   tabsRef.current.scrollLeft += posRef.current;
     }
@@ -71,73 +71,37 @@ const CutomTabs = () => {
   //     }
   //   }, [isRTL]);
   const onTabsScroll = useCallback((e) => {
-    // console.log(posRef.current, "refPos");
-    // console.log(getScrollPosition(e.target), "tabPos");
-    // console.log(getScrollPosition(e.target).x, "calc");
     const parentPos = tabsRef.current.getBoundingClientRect();
     const childPos = tabRef.current[isActive].getBoundingClientRect();
-    // console.log(parentPos.x);
-    // console.log(getScrollPosition(e.target));
-    // console.log(childPos.left , "child");
-    // // console.log(posRef.current, "ref");
-    // console.log(
-    //   Math.abs(getScrollPosition(e.target).x) -
-    //     Math.abs(childPos.x - tabsRef.current.offsetWidth),
-    //   "new"
-    // );
-    // console.log(childPos.x - tabsRef.current.offsetWidth, "sss");
-    // console.log(
-    //   Math.abs(tabsRef.current.getBoundingClientRect().left - childPos.x),
-    //   "sss"
-    // );
-    const CP =
-      Math.abs(tabsRef.current.getBoundingClientRect().left - childPos.x) -
-      tabRef.current[isActive].offsetWidth;
-    // console.log(tabRef.current[isActive].getBoundingClientRect().width);
-    // console.log(
-    //   tabsRef.current.offsetWidth +
-    //     tabRef.current[isActive].getBoundingClientRect().width * 2,
-    //   "new"
-    // );
-    console.log(getScrollPosition(e.target).x, "scroll pos");
-    console.log(parentPos.x - childPos.x, "acgtive");
-    console.log(
-      Math.abs(getScrollPosition(e.target).x) -
-        parentPos.x -
-        childPos.x +
-        tabsRef.current.offsetWidth
-    );
-    console.log();
-    // console.log(getScrollPosition(e.target).x);
-    // console.log(
+
+    // const CP =
     //   tabsRef.current.offsetWidth -
-    //     tabRef.current[isActive].getBoundingClientRect().width * 2
-    // );
-    const { x, width, left, right } =
-      tabRef.current[isActive].getBoundingClientRect();
+    //   Math.abs(tabsRef.current.getBoundingClientRect().left - childPos.x) -
+    //   tabRef.current[isActive].offsetWidth;
+    // console.log(parentPos.x);
+    // console.log(CP, "new");
+    console.log(childPos.left);
+    // console.log(childPos.left);
+    // console.log(tabsRef.current.offsetWidth);
+    console.log(tabsRef.current.scrollWidth);
+    // console.log(getScrollPosition(e.target).x, "scrollPos");
+    // console.log(tabsRef.current.clientWidth);
+    // console.log(getScrollPosition(e.target).x - (parentPos.x - childPos.x));
+    // const { x, width, left, right } =
+    //   tabRef.current[isActive].getBoundingClientRect();
     // console.log({ x, width, left, right });
-    posRef.current = isRTL
-      ? Math.abs(getScrollPosition(e.target).x) -
-        parentPos.x -
-        childPos.x +
-        tabsRef.current.offsetWidth
-      : getScrollPosition(e.target).x - (parentPos.x - childPos.x);
-    // console.log(parentPos.x - childPos.x, "p - c");
-
-    // setPos(getScrollPosition(e.target).x - (parentPos.x - childPos.x));
-
-    // pos = getScrollPosition(e.target).x - (parentPos.x - childPos.x);
+    posRef.current = getScrollPosition(e.target).x - (parentPos.x - childPos.x);
   });
 
   return (
     <StyledTabsContainer>
-      <button className="right" onClick={onRightBtnClick}>
+      {/* <button className="right" onClick={onRightBtnClick}>
         {">"}{" "}
       </button>
       <button className="left" onClick={onLeftBtnClick}>
         {" "}
         {"<"}{" "}
-      </button>
+      </button> */}
       <StyledCutomTabs ref={tabsRef} onScroll={onTabsScroll}>
         {[...Array(40).keys()].map((item, index) => (
           <div
@@ -174,6 +138,7 @@ const StyledTabsContainer = styled.div`
   button {
     position: absolute;
     top: 50%;
+
     transform: translate(0, -50%);
     &.right {
       right: -30px;
